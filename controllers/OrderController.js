@@ -1,9 +1,20 @@
 const getOrder = async (req, res) => {
   res.status(200).json({ msg: "orders are fetched" });
 };
+
+
 const postOrder = async (req, res) => {
-  res.status(201).json({ msg: "orders are created" });
+  const Order = {
+    ProductId : req.body.ProductId,
+    quantity : req.body.quantity
+  }
+  res.status(201).json({ 
+    msg: "orders are created /orders",
+    Order : Order 
+  });
 };
+
+
 const getOrderById = async (req, res) => {
   const id = req.params.orderId;
   if (id === "special") {
@@ -18,6 +29,7 @@ const getOrderById = async (req, res) => {
   }
 };
 
+
 const patchOrderById = async (req, res) => {
   const id = req.params.orderId;
   res.status(200).json({
@@ -25,6 +37,8 @@ const patchOrderById = async (req, res) => {
     objid: id,
   });
 };
+
+
 const deleteOrderById = async (req, res) => {
   const id = req.params.orderId;
   res.status(201).json({
@@ -32,6 +46,7 @@ const deleteOrderById = async (req, res) => {
     objid: id,
   });
 };
+
 
 module.exports = {
   getOrder,

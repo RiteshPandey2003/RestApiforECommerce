@@ -1,22 +1,48 @@
+const Product = require("../models/product.js");
+const mongoose = require("mongoose");
+
 const getProduct = async (req, res) => {
   res.status(200).json({ msg: "get request" });
 };
+
 const postProduct = async (req, res) => {
-  res.status(201).json({ msg: "Post request" });
+  const product = new Product({
+    _id: new mongoose.Types.ObjectId(),
+    name: req.body.name,
+    price: req.body.price,
+  });
+  product
+    .save()
+    .then((result) => {
+      console.log(result);
+      res.status(201).json({
+        msg: "Post request at url /products",
+        createdProduct: result,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+
+  res.status(201).json({
+    msg: "Post request at url /products",
+    createdProduct: Product,
+  });
 };
-const getProdeuctById = async(req, res) => {
+
+const getProdeuctById = async (req, res) => {
   const id = req.params.productId;
-  console.log(id)
-  if (id === 'special') {
-    res.status(200).json({
-      msg: "you discovered a special id!",
-      objid: id,
+  Product.findById(id)
+    .exec()
+    .then((doc) => {
+      console.log(doc);
+      res.status(200).json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
     });
-  } else {
-    res.status(200).json({
-      msg: "you discoverd and id!",
-    });
-  }
 };
 
 const patchProdeuctById = async (req, res) => {
